@@ -40,16 +40,22 @@ namespace Reproductor
 
         //VolumeSampleProvider volume; 
         EfectoVolumen efectoVolumen;
+        EfectoFadeIn EfectoFadeIn;
 
         public MainWindow()
         {
             InitializeComponent();
+
             ListarDispositivosSalida();
+
             btnReproducir.IsEnabled = false;
+
             btnPausa.IsEnabled = false;
+
             btnDetener.IsEnabled = false;
 
             timer = new DispatcherTimer();
+
             timer.Interval = TimeSpan.FromMilliseconds(500);
 
             timer.Tick += Timer_Tick;
@@ -58,7 +64,13 @@ namespace Reproductor
         }
 
         private void Timer_Tick(object sender, EventArgs e)
-        {
+        { 
+            /*
+            if (EfectoFadeIn != null)
+            {
+                lblMuestras.Text = EfectoFadeIn.segundosTranscurridos.ToString();
+            }
+            */
             lblTiempoActual.Text = reader.CurrentTime.ToString().Substring(0, 8);
             if(!dragging)
             {
@@ -108,7 +120,9 @@ namespace Reproductor
                     volume.Volume = (float)(sldVolumen.Value);
                     */
 
-                    efectoVolumen = new EfectoVolumen(reader);
+                    EfectoFadeIn = new EfectoFadeIn(reader,20.0f);
+
+                    efectoVolumen = new EfectoVolumen(EfectoFadeIn);
                     efectoVolumen.Volumen = (float)(sldVolumen.Value);
 
                     output = new WaveOut();

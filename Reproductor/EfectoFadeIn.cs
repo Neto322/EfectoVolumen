@@ -17,10 +17,16 @@ namespace Reproductor
 
         private float duracion;
 
-        public EfectoFadeIn(ISampleProvider fuente,float duracion)
+        private float duracionFadeOut;
+
+        private float inicio;
+
+        public EfectoFadeIn(ISampleProvider fuente,float duracion,float duracionFadeOut, float inicio)
         {
             this.fuente = fuente;
             this.duracion = duracion;
+            this.duracionFadeOut = duracionFadeOut;
+            this.inicio = inicio;
 
         }
         public WaveFormat WaveFormat
@@ -49,6 +55,23 @@ namespace Reproductor
                 {
                     buffer[i + offset] *= factorescala;
                 }
+
+            }
+
+            if(segundosTranscurridos >= inicio)
+            {
+                float factordeescala = duracionFadeOut / segundosTranscurridos;
+
+                for (int i=0; i<read; i++)
+                {
+                    buffer[i + offset] *= factordeescala;
+                    if(buffer[i + offset] <= 0)
+                    {
+                        buffer[i + offset] = 0;
+                    }
+                }
+
+               
 
             }
 

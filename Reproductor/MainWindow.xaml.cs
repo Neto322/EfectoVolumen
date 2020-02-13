@@ -41,6 +41,7 @@ namespace Reproductor
         //VolumeSampleProvider volume; 
         EfectoVolumen efectoVolumen;
         EfectoFadeIn EfectoFadeIn;
+        EfectoFadeOut efectoFadeOut;
 
         public MainWindow()
         {
@@ -76,6 +77,8 @@ namespace Reproductor
             {
                 sldTiempo.Value = reader.CurrentTime.TotalSeconds;
             }
+
+            
         }
 
         void ListarDispositivosSalida()
@@ -126,9 +129,16 @@ namespace Reproductor
 
                     float duracionFadeOut = float.Parse(txtDuracionFadeOut.Text);
 
-                    EfectoFadeIn = new EfectoFadeIn(reader,duracionFadeIn,duracionFadeOut,inicio);
+                    EfectoFadeIn = new EfectoFadeIn(reader,duracionFadeIn);
 
-                    efectoVolumen = new EfectoVolumen(EfectoFadeIn);
+                    efectoFadeOut = new EfectoFadeOut(reader, inicio, duracionFadeOut);
+
+                    efectoVolumen = new EfectoVolumen(efectoFadeOut);
+
+         
+
+
+
 
                     efectoVolumen.Volumen = (float)(sldVolumen.Value);
 

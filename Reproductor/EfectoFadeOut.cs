@@ -21,6 +21,8 @@ namespace Reproductor
 
         float factordeescala;
 
+       
+
         public EfectoFadeOut(ISampleProvider fuente, float inicio, float duracion)
         {
             this.fuente = fuente;
@@ -34,6 +36,8 @@ namespace Reproductor
                 return fuente.WaveFormat;
             }
         }
+        
+
 
         public int Read(float[] buffer, int offset, int count)
         {
@@ -45,7 +49,13 @@ namespace Reproductor
 
             if (segundosTranscurridos >= inicio)
             {
-                factordeescala = duracion / segundosTranscurridos;
+                factordeescala = (((inicio + duracion)-segundosTranscurridos))/duracion;
+
+                if(factordeescala <= 0)
+                {
+                    factordeescala = 0;
+                }
+
 
                 for (int i = 0; i < read; i++)
                 {
@@ -54,6 +64,7 @@ namespace Reproductor
                     {
                         buffer[i + offset] = 0;
                     }
+                   
                 }
 
                 Console.WriteLine(factordeescala);
